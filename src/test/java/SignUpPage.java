@@ -98,9 +98,9 @@ public class SignUpPage {
         return getErrors().get(number - 1).getText();
 
         }
-        public boolean isErrorVisible(String message) {
-            return driver.findElement(By.xpath(format(errorText, message))).
+        //public boolean isErrorVisible(String message) {
+            //return driver.findElement(By.xpath(format(errorText, message))).size() >0 && driver.findElement(By.xpath(format(errorText, message))).get(0).isDisplayed
 
-        }
+        //}
 
 }
