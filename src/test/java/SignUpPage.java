@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.openqa.selenium.By.xpath;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
@@ -18,19 +19,19 @@ public class SignUpPage {
         this.driver=driver;
 
     }
-    By emailField = By.xpath("//input[@id='register-email']");
-    By confirmEmailField = By.xpath("//input[@id='register-confirm-email']");
-    By passwordField = By.xpath("//input[@id='register-password']");
-    By nameField = By.xpath("//input[@id='register-displayname']");
-    By monthDropDownField = By.xpath("//select[@id='register-dob-month']");
+    By emailField = xpath("//input[@id='register-email']");
+    By confirmEmailField = xpath("//input[@id='register-confirm-email']");
+    By passwordField = xpath("//input[@id='register-password']");
+    By nameField = xpath("//input[@id='register-displayname']");
+    By monthDropDownField = xpath("//select[@id='register-dob-month']");
     String monthDropDownOption ="//select[@id='register-dob-month']/option[text()='%s']";
-    By dayField = By.xpath("//input[@id='register-dob-day']");
-    By yearField = By.xpath("//input[@id='register-dob-year']");
-    String sexRadioButton = "//li[@id='li-gender']/label[normalize-space()='%s']/input/";
-    By shareCheckbox = By.xpath("//input[@id='register-thirdparty']");
-    By registerButton= By.xpath("//a[@id='register-button-email-submit']");
-    By errorLabel = By.xpath("//label[@class='has-error' and string-length(text())>0]");
-    String errorText = "//label[@class='has-error' and text()=%s]";
+    By dayField = xpath("//input[@id='register-dob-day']");
+    By yearField = xpath("//input[@id='register-dob-year']");
+    String sexRadioButton = "//li[@id='li-gender']/label[normalize-space()='%s']/input";
+    By shareCheckbox = xpath("//input[@id='register-thirdparty']");
+    By registerButton = xpath("//a[@id='register-button-email-submit']");
+    By errorLabel = xpath("//label[@class='has-error' and string-length(text())>0]");
+    String errorText = "//label[@class='has-error' and text()='%s']";
 
     public SignUpPage typeConfirmEmail(String email){
         driver.findElement(confirmEmailField).sendKeys(email);
@@ -44,7 +45,7 @@ public class SignUpPage {
 
     }
 
-    public SignUpPage typePassword(String password){
+    public SignUpPage typePassword (String password){
         driver.findElement(passwordField).sendKeys(password);
         return this;
 
@@ -70,18 +71,18 @@ public class SignUpPage {
 
     public SignUpPage setMonth(String month){
         driver.findElement(monthDropDownField).click();
-        new WebDriverWait(driver, 5).until(visibilityOfElementLocated(By.xpath(format(monthDropDownOption, month)))).click();
+        new WebDriverWait(driver, 7).until(visibilityOfElementLocated(xpath(format(monthDropDownOption, month)))).click();
         return this;
 
     }
 
     public SignUpPage setSex (String value){
-        driver.findElement(By.xpath(format(sexRadioButton,value))).click();
+        driver.findElement(xpath(format(sexRadioButton,value))).click();
         return this;
 
     } public SignUpPage setShare (boolean value) {
         WebElement checkbox = driver.findElement(shareCheckbox);
-        if (!checkbox.isSelected() == value) {
+        if (checkbox.isSelected() == value) {
             checkbox.click();
         }
         return this;
@@ -97,10 +98,12 @@ public class SignUpPage {
         public String getErrorByNumber(int number) {
         return getErrors().get(number - 1).getText();
 
-        }
-        //public boolean isErrorVisible(String message) {
-            //return driver.findElement(By.xpath(format(errorText, message))).size() >0 && driver.findElement(By.xpath(format(errorText, message))).get(0).isDisplayed
+        }public boolean isErrorVisible(String message) {
+        return driver.findElements(xpath(format(errorText, message))).size() >0 &&
+                driver.findElements(xpath(format(errorText, message))).get(0).isSelected();
 
-        //}
+
+    }
+
 
 }
